@@ -387,22 +387,24 @@ class ProductContentMethods(MethodGroup):
     def __init__(self,api):
         super(ProductContentMethods, self).__init__(api, "content")
 
-    def sendContent(self, language, content):
+    def sendContent(self, language, attributes, assets):
         supported_languages = ["nl","nl-BE","fr","fr-BE"]
         if language not in supported_languages:
             raise ValueError("Unsupported language. Only nl, nl-BE, fr, fr-BE are supported")
 
-        if type(content) is dict:
-           content = [content]
-        elif type(content) is not list:
-            raise ValueError("Incorrect type of content sent")
+        if type(attributes) is not list:
+            raise ValueError("Attributes must be provided as a list")
 
-        final_data = {
+        if type(assets) is not list:
+            raise ValueError("Assets must be provided as a list")
+
+        content = {
             "language": language,
-            "productContents": content
+            "attributes": attributes,
+            "assets": assets,
         }
 
-        response = self.request("POST",path="product",json=final_data)
+        response = self.request("POST",path="products",json=content)
         return ProcessStatus.parse(self.api, response.text)
 
     def getValidationReport(self, uploadId):
