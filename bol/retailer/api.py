@@ -407,8 +407,8 @@ class ProductContentMethods(MethodGroup):
         response = self.request("POST",path="products",json=content)
         return ProcessStatus.parse(self.api, response.text)
 
-    def getValidationReport(self, uploadId):
-        response = self.request("GET", path="validation-report/{}".format(uploadId))
+    def getUploadReport(self, uploadId):
+        response = self.request("GET", path="upload-report/{}".format(uploadId))
         return ProductContents.parse(self.api, response.text)
 
 
